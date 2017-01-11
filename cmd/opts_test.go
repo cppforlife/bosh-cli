@@ -85,6 +85,7 @@ var _ = Describe("Opts", func() {
 				"Command 'UploadReleaseOpts' shadows global long option 'version'",
 				"Command 'CreateReleaseOpts' shadows global long option 'version'",
 				"Command 'FinalizeReleaseOpts' shadows global long option 'version'",
+				"Command 'TunnelOpts' shadows global long option 'user'", // ok -- tunnel isn't related to director
 			}))
 		})
 
@@ -2613,6 +2614,37 @@ var _ = Describe("Opts", func() {
 					`long:"dir" description:"Release directory path if not current working directory" default:"."`,
 				))
 			})
+		})
+	})
+
+	Describe("TunnelOpts", func() {
+		It("has --host", func() {
+			Expect(getStructTagForName("Host", &TunnelOpts{})).To(Equal(
+				`long:"host" description:"Host for gateway connection" env:"BOSH_GW_HOST"`))
+		})
+
+		It("has --port", func() {
+			Expect(getStructTagForName("Port", &TunnelOpts{})).To(Equal(
+				`long:"port" description:"Port for gateway connection" default:"22" env:"BOSH_GW_PORT"`))
+		})
+
+		It("has --user", func() {
+			Expect(getStructTagForName("Username", &TunnelOpts{})).To(Equal(
+				`long:"user" description:"Username for gateway connection" default:"vcap" env:"BOSH_GW_USER"`))
+		})
+
+		It("has --private-key", func() {
+			Expect(getStructTagForName("PrivateKey", &TunnelOpts{})).To(Equal(
+				`long:"private-key" description:"Private key path for gateway connection" env:"BOSH_GW_PRIVATE_KEY"`))
+		})
+
+		It("has --kill", func() {
+			Expect(getStructTagForName("Kill", &TunnelOpts{})).To(Equal(`long:"kill" description:"Kill tunnel"`))
+		})
+
+		It("has --lifetime", func() {
+			Expect(getStructTagForName("Lifetime", &TunnelOpts{})).To(Equal(
+				`long:"lifetime" description:"Maximum lifetime" default:"1h"`))
 		})
 	})
 })

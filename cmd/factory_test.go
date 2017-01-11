@@ -360,6 +360,7 @@ var _ = Describe("Factory", func() {
 			boshOpts.UploadBlobs = UploadBlobsOpts{}
 			boshOpts.SSH = SSHOpts{}
 			boshOpts.SCP = SCPOpts{}
+			boshOpts.Tunnel = TunnelOpts{}
 			return boshOpts
 		}
 

@@ -337,6 +337,9 @@ func (c Cmd) Execute() (cmdErr error) {
 	case *SyncBlobsOpts:
 		return NewSyncBlobsCmd(c.blobsDir(opts.Directory), opts.ParallelOpt).Run()
 
+	case *TunnelOpts:
+		return NewTunnelCmd(deps.UI, boshssh.NewClientFactory(deps.Logger)).Run(*opts)
+
 	case *MessageOpts:
 		deps.UI.PrintBlock(opts.Message)
 		return nil

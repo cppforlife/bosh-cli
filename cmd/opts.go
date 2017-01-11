@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"time"
+
 	boshuuid "github.com/cloudfoundry/bosh-utils/uuid"
 	"github.com/cppforlife/go-patch/patch"
 
@@ -150,6 +152,8 @@ type BoshOpts struct {
 	UploadBlobs UploadBlobsOpts `command:"upload-blobs" description:"Upload blobs"`
 
 	Variables VariablesOpts `command:"variables" alias:"vars" description:"List variables"`
+
+	Tunnel TunnelOpts `command:"tunnel" description:"Tunnels traffic over an SSH connection (SOCKS5)"`
 }
 
 type HelpOpts struct {
@@ -840,6 +844,19 @@ type SyncBlobsOpts struct {
 
 type UploadBlobsOpts struct {
 	Directory DirOrCWDArg `long:"dir" description:"Release directory path if not current working directory" default:"."`
+	cmd
+}
+
+type TunnelOpts struct {
+	Host string `long:"host" description:"Host for gateway connection" env:"BOSH_GW_HOST"`
+	Port int    `long:"port" description:"Port for gateway connection" default:"22" env:"BOSH_GW_PORT"`
+
+	Username   string       `long:"user"        description:"Username for gateway connection" default:"vcap" env:"BOSH_GW_USER"`
+	PrivateKey FileBytesArg `long:"private-key" description:"Private key path for gateway connection" env:"BOSH_GW_PRIVATE_KEY"`
+
+	Kill     bool          `long:"kill"     description:"Kill tunnel"`
+	Lifetime time.Duration `long:"lifetime" description:"Maximum lifetime" default:"1h"`
+
 	cmd
 }
 
